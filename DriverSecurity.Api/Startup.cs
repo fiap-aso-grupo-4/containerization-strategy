@@ -1,4 +1,5 @@
 using DriverSecurity.Api.Configuration;
+using DriverSecurity.Api.HealthChecks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -24,7 +25,9 @@ namespace DriverSecurity.Api
                 Configuration.GetSection(nameof(DangerReportDatabaseSettings)));
             services.AddSingleton<IDangerReportDatabaseSettings>(x =>
                 x.GetRequiredService<IOptions<DangerReportDatabaseSettings>>().Value);
-            
+
+            services.AddHealthChecks()
+                .AddCheck<GlobalHealthCheck>("global_health_check");
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -47,7 +50,11 @@ namespace DriverSecurity.Api
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapHealthChecks("/health");
+            });
         }
     }
 }

@@ -15,7 +15,7 @@ namespace DriverSecurity.Api.Controllers
             return Accepted();
         }
 
-        [HttpPut("{id}")]
+        [HttpPatch("{id}")]
         public async Task<IActionResult> Update([FromRoute] Guid id,
             [FromBody] ReportDangerRequestModel dangerRequestModel)
         {
