@@ -1,12 +1,12 @@
 ﻿using System;
+using MongoDB.Driver.GeoJsonObjectModel;
 
 namespace DriverSecurity.Api.Domain.ValueObjects
 {
     public struct PositioningEvent
     {
         public DateTime EventDateTime { get; set; }
-        public string Latitude { get; set; }
-        public string Longitude { get; set; }
+        public GeoJson2DGeographicCoordinates  Coordinates { get; set; }
         public string AggressorPhotoPath { get; set; }
     }
 }

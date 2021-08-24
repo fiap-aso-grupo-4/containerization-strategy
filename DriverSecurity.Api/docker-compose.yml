@@ -1,0 +1,34 @@
+version: "3"
+
+services:
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    ports:
+      - 27017:27017
+    networks:
+      - fiap-network
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    working_dir: /app/publish
+    container_name: driver-security-api
+    command: dotnet DriverSecurity.Api.dll
+    links:
+      - mongodb
+    depends_on:
+      - mongodb
+    ports:
+      - 5001:5001
+      - 5000:5000
+    volumes:
+      - .:/app/carrefour-mcommerce
+      - /app/carrefour-mcommerce/node_modules
+    networks:
+      - fiap-network
+
+networks:
+  fiap-network:
+    driver: bridge

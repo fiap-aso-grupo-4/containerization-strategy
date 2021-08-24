@@ -5,6 +5,7 @@ using DriverSecurity.Api.Domain.Contracts.Repositories;
 using DriverSecurity.Api.Domain.Entities;
 using DriverSecurity.Api.Domain.ValueObjects;
 using MongoDB.Driver;
+using MongoDB.Driver.GeoJsonObjectModel;
 
 namespace DriverSecurity.Api.Repositories
 {
@@ -26,7 +27,7 @@ namespace DriverSecurity.Api.Repositories
             return dangerReport;
         }
 
-        public async Task<DangerReport> UpdateLocation(Guid eventId, string latitude, string longitude, 
+        public async Task<DangerReport> UpdateLocation(Guid eventId, double latitude, double longitude, 
             DateTime eventDateTime, string aggressorPhotoPath)
         {
             var dangerReports = await _dangerReports.FindAsync(x => 
@@ -36,8 +37,7 @@ namespace DriverSecurity.Api.Repositories
             report.PositioningEvents.Add(new PositioningEvent
             {
                 EventDateTime = eventDateTime,
-                Latitude = latitude,
-                Longitude = longitude,
+                Coordinates = new GeoJson2DGeographicCoordinates(longitude, latitude),
                 AggressorPhotoPath = aggressorPhotoPath
             });
 

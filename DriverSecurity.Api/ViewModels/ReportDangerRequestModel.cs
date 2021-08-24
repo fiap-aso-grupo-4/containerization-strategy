@@ -1,5 +1,4 @@
 ﻿using System;
-using Microsoft.AspNetCore.Http;
 
 namespace DriverSecurity.Api.ViewModels
 {
@@ -7,9 +6,8 @@ namespace DriverSecurity.Api.ViewModels
     {
         public Guid DriverId { get; set; }
         public Guid Passenger { get; set; }
-        public string Latitude { get; set; }
-        public string Longitude { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
         public string LicensePlate { get; set; }
-        public IFormFile AggressorPhoto { get; set; }
     }
 }

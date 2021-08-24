@@ -1,5 +1,9 @@
 using DriverSecurity.Api.Configuration;
+using DriverSecurity.Api.Domain.Contracts.Repositories;
+using DriverSecurity.Api.Domain.Contracts.Services;
 using DriverSecurity.Api.HealthChecks;
+using DriverSecurity.Api.Repositories;
+using DriverSecurity.Api.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -26,6 +30,9 @@ namespace DriverSecurity.Api
             services.AddSingleton<IDangerReportDatabaseSettings>(x =>
                 x.GetRequiredService<IOptions<DangerReportDatabaseSettings>>().Value);
 
+            services.AddScoped<IDangerReportService, DangerReportService>();
+            services.AddScoped<IDangerReportRepository, DangerReportRepository>();
+
             services.AddHealthChecks()
                 .AddCheck<GlobalHealthCheck>("global_health_check");
             services.AddControllers();
@@ -41,14 +48,12 @@ namespace DriverSecurity.Api
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "DriverSecurity.Api v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", 
+                    "DriverSecurity.Api v1"));
             }
 
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
-            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

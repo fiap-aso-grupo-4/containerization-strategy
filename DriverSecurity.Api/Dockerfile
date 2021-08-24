@@ -15,6 +15,7 @@ FROM build AS publish
 RUN dotnet publish "DriverSecurity.Api.csproj" -c Release -o /app/publish
 
 FROM base AS final
+ENV TZ="America/Sao_Paulo"
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "DriverSecurity.Api.dll"]
