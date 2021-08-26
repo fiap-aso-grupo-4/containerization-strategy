@@ -17,27 +17,29 @@ namespace DriverSecurity.Api.Services
             _reportRepository = reportRepository;
         }
         
-        public async Task<DangerReport> Create(Guid driverId, Guid passengerId, double latitude, double longitude,
+        public async Task<DangerReport> Create(string driverId, string passengerId, double latitude, double longitude,
             string aggressorFilePath)
         {
             var dangerReport = new DangerReport
             {
-                EventId = Guid.NewGuid(),
+                _id = Guid.NewGuid().ToString(),
+                EventId = Guid.NewGuid().ToString(),
                 Driver = new Driver
                 {
-                    
+                    DriverId = driverId
                 },
                 Passenger = new Passenger
                 {
-                    
+                    PassengerId = passengerId
                 },
                 PositioningEvents = new List<PositioningEvent>
                 {
                     new()
                     {
+                        EventId = Guid.NewGuid().ToString(),
                         EventDateTime = DateTime.Now,
                         Coordinates = new GeoJson2DGeographicCoordinates(latitude, longitude), 
-                        AggressorPhotoPath = string.Empty
+                        AggressorPhotoPath = aggressorFilePath
                     }
                 }
             };
@@ -45,7 +47,7 @@ namespace DriverSecurity.Api.Services
             return await _reportRepository.Create(dangerReport);
         }
 
-        public async Task<DangerReport> UpdateLocation(Guid eventId, double latitude, double longitude, string aggressorFilePath)
+        public async Task<DangerReport> UpdateLocation(string eventId, double latitude, double longitude, string aggressorFilePath)
         {
             return await _reportRepository.UpdateLocation(eventId, latitude, longitude, DateTime.Now,
                 aggressorFilePath);

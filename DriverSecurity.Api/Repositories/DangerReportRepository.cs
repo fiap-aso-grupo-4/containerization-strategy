@@ -27,7 +27,7 @@ namespace DriverSecurity.Api.Repositories
             return dangerReport;
         }
 
-        public async Task<DangerReport> UpdateLocation(Guid eventId, double latitude, double longitude, 
+        public async Task<DangerReport> UpdateLocation(string eventId, double latitude, double longitude, 
             DateTime eventDateTime, string aggressorPhotoPath)
         {
             var dangerReports = await _dangerReports.FindAsync(x => 

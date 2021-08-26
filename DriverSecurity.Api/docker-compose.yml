@@ -13,19 +13,14 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    working_dir: /app/publish
-    container_name: driver-security-api
-    command: dotnet DriverSecurity.Api.dll
+    image: driver-security-api
     links:
       - mongodb
     depends_on:
       - mongodb
     ports:
-      - 5001:5001
-      - 5000:5000
-    volumes:
-      - .:/app/carrefour-mcommerce
-      - /app/carrefour-mcommerce/node_modules
+      - 8080:80
+      - 443:443
     networks:
       - fiap-network
 
